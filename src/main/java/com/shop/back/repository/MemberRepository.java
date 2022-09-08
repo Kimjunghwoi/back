@@ -1,5 +1,6 @@
 package com.shop.back.repository;
 
+import com.shop.back.controller.dto.response.MemberResponse;
 import com.shop.back.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -14,8 +15,9 @@ public class MemberRepository {
 
     private final EntityManager em;
 
-    public void save(Member member) {
+    public Member save(Member member) {
         em.persist(member);
+        return member;
     }
 
     public Member findOne(Long id) {

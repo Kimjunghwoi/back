@@ -1,52 +1,44 @@
 package com.shop.back.controller;
 
+import com.shop.back.controller.dto.request.MemberRequest;
+import com.shop.back.controller.dto.response.MemberResponse;
 import com.shop.back.domain.Address;
 import com.shop.back.domain.Member;
 import com.shop.back.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("/api/members")
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/members/new")
-    public String createForm(Model model) {
-        model.addAttribute("memberForm", new MemberForm());
-        return "members/createMemberForm";
+//    @GetMapping("/new")
+//    public String createForm(Model model) {
+//        model.addAttribute("memberForm", new MemberForm());
+//        return "members/createMemberForm";
+//    }
+
+    @PostMapping("/new")
+    public ResponseEntity<MemberResponse> create(@RequestBody @Valid MemberRequest memberRequest) {
+
+//        if (result.hasErrors()) {
+//            return "members/createMemberForm";
+//        }
+        return ResponseEntity.ok(memberService.join(memberRequest));
+
     }
 
-    @PostMapping("/members/new")
-    public String create(@Valid MemberForm form, BindingResult result) {
-
-        if (result.hasErrors()) {
-            return "members/createMemberForm";
-        }
-
-        Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
-
-        Member member = new Member();
-        member.setName(form.getName());
-        member.setAddress(address);
-
-        memberService.join(member);
-        return "redirect:/";
-    }
-
-    @GetMapping("/members")
-    public String list(Model model) {
-
-        model.addAttribute("members", memberService.findMembers());
-
-        return "members/memberList";
-
+    @GetMapping
+    public ResponseEntity<List<MemberResponse>> getAllMembers() {
+        return ResponseEntity.ok(memberService.getAllMembers());
     }
 }

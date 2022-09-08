@@ -1,6 +1,9 @@
 package com.shop.back.domain;
 
+import com.shop.back.controller.dto.request.MemberRequest;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class Member {
 
     @Id
@@ -27,4 +31,20 @@ public class Member {
 //    public Member() {
 //        orders = new ArrayList<>();
 //    }
+
+
+    @Builder
+    public Member(Long id, String name, Address address, List<Orders> orders) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.orders = orders;
+    }
+
+    public static Member from(MemberRequest memberRequest) {
+        return Member.builder()
+                .name(memberRequest.getName())
+                .address(memberRequest.getAddress())
+                .build();
+    }
 }

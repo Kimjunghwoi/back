@@ -3,26 +3,24 @@ package com.shop.back.controller;
 import com.shop.back.domain.item.Book;
 import com.shop.back.service.ItemService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@RequestMapping("/api/items")
 @RequiredArgsConstructor
 public class ItemController {
 
     private final ItemService itemService;
 
-    @GetMapping("/items/new")
-    public String createForm(Model model) {
-        model.addAttribute("form", new BookForm());
-        return "items/createItemForm";
-    }
+//   백, 프론트 분리로 필요없어짐.
+//    @GetMapping("/new")
+//    public String createForm(Model model) {
+//        model.addAttribute("form", new BookForm());
+//        return "items/createItemForm";
+//    }
 
-    @PostMapping("items/new")
+    @PostMapping("/items/new")
     public String create(BookForm form) {
 
         //validation 생략.. 나중에 추가..
